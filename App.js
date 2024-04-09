@@ -5,6 +5,7 @@ import { theme } from "./assets/src/infrastructure/theme";
 
 import { RestaurantsContextProvider } from "./assets/src/services/restaurants/restaurants.context";
 import { LocationContextProvider } from "./assets/src/services/restaurants/location/location.context";
+import { FavouritesContextProvider } from "./assets/src/services/favourites/favourites.context";
 import { Navigation } from "./assets/src/infrastructure/navigation";
 
 import {
@@ -27,16 +28,18 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <>
-        <LocationContextProvider>
-          <RestaurantsContextProvider>
-            <Navigation />
-          </RestaurantsContextProvider>
-        </LocationContextProvider>
-        <ExpoStatusBar style={styles.statusbar} />
-      </>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <FavouritesContextProvider>
+          <LocationContextProvider>
+            <RestaurantsContextProvider>
+              <Navigation />
+            </RestaurantsContextProvider>
+          </LocationContextProvider>
+        </FavouritesContextProvider>
+      </ThemeProvider>
+      <ExpoStatusBar style={styles.statusbar} />
+    </>
   );
 }
 
