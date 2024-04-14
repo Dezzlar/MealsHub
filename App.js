@@ -7,12 +7,28 @@ import { RestaurantsContextProvider } from "./assets/src/services/restaurants/re
 import { LocationContextProvider } from "./assets/src/services/restaurants/location/location.context";
 import { FavouritesContextProvider } from "./assets/src/services/favourites/favourites.context";
 import { Navigation } from "./assets/src/infrastructure/navigation";
-
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 import {
   useFonts as useOswald,
   Oswald_400Regular,
 } from "@expo-google-fonts/oswald";
 import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
+import { AuthenticationContextProvider } from "./assets/src/services/authentication/authentication.context";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDr0zNCzj6RIvK5BCcaOatZ6VCnEHfG6fc",
+  authDomain: "mealshub-f51cb.firebaseapp.com",
+  projectId: "mealshub-f51cb",
+  storageBucket: "mealshub-f51cb.appspot.com",
+  messagingSenderId: "45660916290",
+  appId: "1:45660916290:web:3b3116b96d4f3506923bdb",
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export default function App() {
   let [oswaldLoaded] = useOswald({
@@ -30,13 +46,15 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <FavouritesContextProvider>
-          <LocationContextProvider>
-            <RestaurantsContextProvider>
-              <Navigation />
-            </RestaurantsContextProvider>
-          </LocationContextProvider>
-        </FavouritesContextProvider>
+        <AuthenticationContextProvider>
+          <FavouritesContextProvider>
+            <LocationContextProvider>
+              <RestaurantsContextProvider>
+                <Navigation />
+              </RestaurantsContextProvider>
+            </LocationContextProvider>
+          </FavouritesContextProvider>
+        </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style={styles.statusbar} />
     </>
