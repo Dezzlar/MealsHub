@@ -1,3 +1,164 @@
-@startuml hello world
-A -> B : Hello
+@startuml mealshub
+
+class App {
+  - themeProvider: ThemeProvider
+  - authenticationContextProvider: AuthenticationContextProvider
+  - navigation: Navigation
+}
+
+
+
+class Navigation {
+  - accountNavigator: AccountNavigator
+  - appNavigator: AppNavigator
+  - settingsNavigator: SettingsNavigator
+  - restaurantsNavigator: RestaurantsNavigator
+}
+
+class Account {
+  - loginScreen: LoginScreen
+  - accountScreen: AccountScreen
+  - registerScreen: RegisterScreen
+  + AccountBackground()
+}
+
+class Map {
+  - screen: MapScreen
+  - search: SearchComponent
+  + mapCallout()
+}
+
+class Restaurants {
+  - restaurantDetailScreen: RestaurantDetailScreen
+  - favouriteScreen: FavouriteScreen
+  - restaurantScreen: RestaurantScreen
+  + restaurantInfoCardComponent()
+  + restaurantInfoStyles()
+  + searchComponent()
+  + restaurantListStyles()
+}
+
+class Settings {
+  - settingsScreen: SettingsScreen
+  - settingsItems: List<SettingsItem>
+  
+  + getProfilePicture(currentUser: User): ProfilePicture
+}
+
+class SettingsItem {
+  - name: String
+  - value: String
+  
+  + getName(): String
+  + getValue(): String
+  + setValue(value: String): void
+}
+
+
+class AccountNavigator {
+  + login()
+  + register()
+  + main()
+}
+
+class AppNavigator {
+  + createScreenOptions(route: Route)
+  - restaurantsNavigator: RestaurantsNavigator
+  - mapScreen: MapScreen
+  - settingsNavigator: SettingsNavigator
+  - favouriteContextProvider: FavouriteContextProvider
+  - locationContextProvider: LocationContextProvider
+  - restaurantContextProvider: RestaurantContextProvider
+}
+
+class SettingsNavigator {
+  + route: Route
+  + navigation: Navigation
+  + settingsScreen()
+}
+
+class RestaurantsNavigator {
+  - restaurantsScreen: RestaurantsScreen
+  - restaurantDetailsScreen: RestaurantDetailsScreen
+  + RestaurantStackNavigator()
+}
+
+class Services {
+  - authentication: Authentication
+  - favouriteService: FavouriteService
+  - locationService: LocationService
+  - restaurantService: RestaurantService
+}
+
+class AuthenticationService {
+  + loginRequest(email: String, password: String)
+}
+
+class AuthenticationContext {
+  + authenticationContextProvider(): void
+  + onLogin(email: String, password: String): void
+  + setLoading(loading: Boolean): void
+  + setError(error: String): void
+  + setUser(user: User): void
+}
+
+class Authentication {
+  - authenticationService: AuthenticationService
+  - authenticationContext: AuthenticationContext
+}
+
+class FavouriteService {
+  - favouritesContextProvider: FavouritesContextProvider
+  
+  + setFavourites(favourites: Array): void
+  + saveFavourites(value: Value, uid: String): void
+  + loadFavourite(uid: String): void
+  + add(restaurant: Restaurant): void
+  + remove(restaurant: Restaurant): void
+}
+
+class LocationService {
+  - locationContextProvider: LocationContextProvider
+  
+  + locationRequest(searchTerm: String): void
+  + locationTransform(result: Result): void
+  + setLocation(location: Location): void
+  + setIsLoading(isLoading: Boolean): void
+  + onSearch(searchKeyword: String): void
+}
+
+class RestaurantService {
+  - restaurantContextProvider: RestaurantContextProvider
+  - locationContext: LocationContext
+  
+  + restaurantRequest(location: Location): void
+  + restaurantTransform(results: Array<Result>): void
+  + retrieveRestaurants(location: Location): void
+  + setRestaurants(restaurants: Array<Restaurant>): void
+  + setLoading(loading: Boolean): void
+}
+
+
+App --> Navigation
+
+Navigation --> AccountNavigator
+Navigation --> AppNavigator
+Navigation --> SettingsNavigator
+Navigation --> RestaurantsNavigator
+
+App --> Services
+
+Services --> AuthenticationService
+Services --> FavouriteService
+Services --> LocationService
+Services --> RestaurantService
+
+Authentication --> AuthenticationService
+Authentication --> AuthenticationContext
+
+Account --|> App
+Map --|> App
+Restaurants --|> App
+Settings --|> App
+
 @enduml
