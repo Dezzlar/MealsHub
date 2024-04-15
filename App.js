@@ -3,9 +3,6 @@ import { ThemeProvider } from "styled-components/native";
 import { StyleSheet } from "react-native";
 import { theme } from "./assets/src/infrastructure/theme";
 
-import { RestaurantsContextProvider } from "./assets/src/services/restaurants/restaurants.context";
-import { LocationContextProvider } from "./assets/src/services/restaurants/location/location.context";
-import { FavouritesContextProvider } from "./assets/src/services/favourites/favourites.context";
 import { Navigation } from "./assets/src/infrastructure/navigation";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -47,13 +44,7 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <AuthenticationContextProvider>
-          <FavouritesContextProvider>
-            <LocationContextProvider>
-              <RestaurantsContextProvider>
-                <Navigation />
-              </RestaurantsContextProvider>
-            </LocationContextProvider>
-          </FavouritesContextProvider>
+          <Navigation />
         </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style={styles.statusbar} />
